@@ -7,8 +7,8 @@ meta-sandbox
 
 function update_local_config() {
   CFG_LOCAL=${ROOT_DIR}/build/conf/local.conf
-  grep BB_NUMBER_THREADS ${CFG_LOCAL} >/dev/null 2>&1 || echo "BB_NUMBER_THREADS=$[$(nproc)*2]" >>${CFG_LOCAL}
-  grep PARALLEL_MAKE ${CFG_LOCAL} >/dev/null 2>&1 || echo "PARALLEL_MAKE=\"-j $[$(nproc)*2]\"" >>${CFG_LOCAL}
+  grep BB_NUMBER_THREADS ${CFG_LOCAL} >/dev/null 2>&1 || echo "BB_NUMBER_THREADS = \"$[$(nproc)*2]\"" >>${CFG_LOCAL}
+  grep PARALLEL_MAKE ${CFG_LOCAL} >/dev/null 2>&1 || echo "PARALLEL_MAKE = \"-j $[$(nproc)*2]\"" >>${CFG_LOCAL}
 }
 
 function update_layer_config() {
