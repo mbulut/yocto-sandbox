@@ -4,3 +4,6 @@
 [submodule "extra-layers/meta-openembedded"]
 	path = extra-layers/meta-openembedded
 	url = https://github.com/openembedded/meta-openembedded.git
+[submodule "extra-layers/meta-qt5"]
+	path = extra-layers/meta-qt5
+	url = https://github.com/meta-qt5/meta-qt5.git
