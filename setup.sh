@@ -1,7 +1,8 @@
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 
 LAYERS=(\
-layers/meta-sandbox
+extra-layers/meta-openembedded
+meta-sandbox
 )
 
 function update_local_config() {
