@@ -18,11 +18,8 @@ function update_layer_config() {
 
 function configure_parallel_builds() {
   cfg=${ROOT_DIR}/build/conf/local.conf
-  bj=$[$(nproc)*2]
-  mj=$[$(nproc)+$(nproc)/2]
-  mj=$((mj < 20 ? mj : 20))
-  sed -i "/BB_NUMBER_THREADS/s/[0-9]\+/${bj}/" ${cfg}
-  sed -i "/PARALLEL_MAKE/s/[0-9]\+/${mj}/" ${cfg}
+  sed -i "/BB_NUMBER_THREADS/s/XX/$[$(nproc)*2]/" ${cfg}
+  sed -i "/PARALLEL_MAKE/s/XX/$[$(nproc)+$(nproc)/2]/" ${cfg}
 }
 
 source ${ROOT_DIR}/poky/oe-init-build-env
