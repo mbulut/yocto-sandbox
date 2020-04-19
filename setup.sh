@@ -18,10 +18,10 @@ function update_layer_config() {
 
 function configure_parallel_builds() {
   cfg=${ROOT_DIR}/build/conf/local.conf
-  jobs=$[$(nproc)*2]
-  jobs=$((jobs < 20 ? jobs : 20))
-  sed -i "/BB_NUMBER_THREADS/s/[0-9]\+/${jobs}/" ${cfg}
-  sed -i "/PARALLEL_MAKE/s/[0-9]\+/${jobs}/" ${cfg}
+  bj=$[$(nproc)*2]
+  mj=$((bj < 20 ? bj : 20))
+  sed -i "/BB_NUMBER_THREADS/s/[0-9]\+/${bj}/" ${cfg}
+  sed -i "/PARALLEL_MAKE/s/[0-9]\+/${mj}/" ${cfg}
 }
 
 source ${ROOT_DIR}/poky/oe-init-build-env
