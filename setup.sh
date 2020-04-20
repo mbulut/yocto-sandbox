@@ -16,14 +16,7 @@ function update_layer_config() {
   done < ${ROOT_DIR}/conf/bblayers.conf.tpl
 }
 
-function configure_parallel_builds() {
-  cfg=${ROOT_DIR}/build/conf/local.conf
-  sed -i "/BB_NUMBER_THREADS/s/XX/$[$(nproc)*2]/" ${cfg}
-  sed -i "/PARALLEL_MAKE/s/XX/$[$(nproc)+$(nproc)/2]/" ${cfg}
-}
-
 source ${ROOT_DIR}/poky/oe-init-build-env
 
 update_local_config
 update_layer_config
-configure_parallel_builds
