@@ -1,2 +1,3 @@
 BB_NUMBER_THREADS = "XX"
 PARALLEL_MAKE = "-j XX"
+INHERIT += "rm_work"
