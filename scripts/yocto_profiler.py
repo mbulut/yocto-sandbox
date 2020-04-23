@@ -56,13 +56,12 @@ def generate_plot(logfile, recipes, filter):
         duration_map = get_overall_task_durations(recipe_stats, filter)
     tasks = list()
     durations = list()
-    total_duration = sum(duration_map.values())
     { tasks.append(t): d for t, d in sorted(duration_map.items(), key=lambda item: item[1]) }
-    { durations.append(duration_map[t]*100/total_duration): d for t, d in sorted(duration_map.items(), key=lambda item: item[1]) }
+    { durations.append(duration_map[t]/60): d for t, d in sorted(duration_map.items(), key=lambda item: item[1]) }
     y_pos = np.arange(len(tasks))
     plt.barh(y_pos, durations, align="center", alpha=0.5)
     plt.yticks(y_pos, tasks)
-    plt.xlabel("Distribution [%]")
+    plt.xlabel("Duration [Minutes]")
     if recipes:
         plt.ylabel("Recipe")
         plt.title("Distribution of Yocto Recipe Build Durations")
