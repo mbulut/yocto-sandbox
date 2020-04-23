@@ -34,39 +34,63 @@ def get_overall_task_durations(recipe_stats):
     return task_durations
 
 
-def generate_plot(logfile):
+def get_overall_recipe_durations(recipe_stats):
+    recipe_durations=dict()
+    for recipe,tasks in recipe_stats.items():
+        rd = 0
+        for duration in tasks.values():
+            rd += duration
+        recipe_durations.update({recipe : rd})
+    return recipe_durations
+
+
+def generate_plot(logfile, recipes):
     recipe_stats = collect_recipe_stats(logfile)
-    task_durations = get_overall_task_durations(recipe_stats)
+    if recipes:
+        duration_map = get_overall_recipe_durations(recipe_stats)
+    else:
+        duration_map = get_overall_task_durations(recipe_stats)
     tasks = list()
     durations = list()
-    total_duration = sum(task_durations.values())
-    { tasks.append(t): d for t, d in sorted(task_durations.items(), key=lambda item: item[1]) }
-    { durations.append(task_durations[t]*100/total_duration): d for t, d in sorted(task_durations.items(), key=lambda item: item[1]) }
+    total_duration = sum(duration_map.values())
+    { tasks.append(t): d for t, d in sorted(duration_map.items(), key=lambda item: item[1]) }
+    { durations.append(duration_map[t]*100/total_duration): d for t, d in sorted(duration_map.items(), key=lambda item: item[1]) }
     y_pos = np.arange(len(tasks))
     plt.barh(y_pos, durations, align="center", alpha=0.5)
     plt.yticks(y_pos, tasks)
-    plt.xlim(0, 100)
-    plt.ylabel("Task")
     plt.xlabel("Distribution [%]")
-    plt.title("Distribution of Yocto Build Task Durations")
+    if recipes:
+        plt.ylabel("Recipe")
+        plt.title("Distribution of Yocto Recipe Build Durations")
+    else:
+        plt.ylabel("Task")
+        plt.title("Distribution of Yocto Build Task Durations")
     plt.grid()
     plt.show()
 
 
-def generate_json(logfile):
+def generate_json(logfile, recipes):
     recipe_stats = collect_recipe_stats(logfile)
-    print(json.dumps(get_overall_task_durations(recipe_stats), indent=2))
+    if recipes:
+        print(json.dumps(get_overall_recipe_durations(recipe_stats), indent=2))
+    else:
+        print(json.dumps(get_overall_task_durations(recipe_stats), indent=2))
 
 
-def generate_text(logfile):
+def generate_text(logfile, recipes):
     recipe_stats = collect_recipe_stats(logfile)
-    task_durations = get_overall_task_durations(recipe_stats)
-    { print("{:31}: {}".format(t, timedelta(seconds=task_durations[t]))): d for t, d in sorted(task_durations.items(), key=lambda item: item[1], reverse=True) }
+    if recipes:
+        duration_map = get_overall_recipe_durations(recipe_stats)
+    else:
+        duration_map = get_overall_task_durations(recipe_stats)
+    pad = max([len(k) for k in duration_map.keys()]) + 1
+    fmt = "{{:{}}}: {{}}".format(pad)
+    { print(fmt.format(t, timedelta(seconds=duration_map[t]))): d for t, d in sorted(duration_map.items(), key=lambda item: item[1], reverse=True) }
 
 
 def get_args():
     parser = argparse.ArgumentParser()
-    parser.description = "a tool for profiling distribution of times elapsed in different bitbake tasks."
+    parser.description = "a tool for profiling distribution of times elapsed in different bitbake tasks"
     parser.add_help
 
     parser.add_argument("file", type=str, help="path to bitbake console log")
@@ -75,6 +99,7 @@ def get_args():
     group.add_argument("-j", "--json", action="store_true", help="output profile summary as JSON")
     group.add_argument("-p", "--plot", action="store_true", help="plot profile data on screen")
 
+    parser.add_argument("-r", "--recipes", action="store_true", help="profile recipe runtimes instead of task runtimes")
     parser.add_argument("-v", "--verbosity", action="count", default=0)
 
     return parser.parse_args()
@@ -84,8 +109,8 @@ if __name__ == "__main__":
     args = get_args()
     with Path(args.file).open(mode="r") as logfile:
         if args.plot:
-            generate_plot(logfile)
+            generate_plot(logfile, args.recipes)
         elif args.json:
-            generate_json(logfile)
+            generate_json(logfile, args.recipes)
         else:
-            generate_text(logfile)
+            generate_text(logfile, args.recipes)
