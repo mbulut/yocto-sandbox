@@ -7,3 +7,9 @@
 [submodule "extra-layers/meta-qt5"]
 	path = extra-layers/meta-qt5
 	url = https://github.com/meta-qt5/meta-qt5.git
+[submodule "extra-layers/meta-xilinx"]
+	path = extra-layers/meta-xilinx
+	url = https://github.com/Xilinx/meta-xilinx.git
+[submodule "extra-layers/meta-xilinx-tools"]
+	path = extra-layers/meta-xilinx-tools
+	url = https://github.com/Xilinx/meta-xilinx-tools.git
