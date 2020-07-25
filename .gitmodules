@@ -13,3 +13,6 @@
 [submodule "extra-layers/meta-xilinx-tools"]
 	path = extra-layers/meta-xilinx-tools
 	url = https://github.com/Xilinx/meta-xilinx-tools.git
+[submodule "extra-layers/meta-petalinux"]
+	path = extra-layers/meta-petalinux
+	url = https://github.com/Xilinx/meta-petalinux
