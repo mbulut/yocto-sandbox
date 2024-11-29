@@ -1,0 +1,12 @@
+[Unit]
+Description=Sandbox Service
+DefaultDependencies=no
+Requires=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash -c "echo sandbox started >/sandbox.log"
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

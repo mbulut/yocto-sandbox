@@ -1,0 +1,68 @@
+// For format details, see https://aka.ms/devcontainer.json
+{
+	"name": "kas",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+   "image": "ghcr.io/siemens/kas/kas:latest",
+
+   "containerEnv": {
+      "SHELL": "/bin/bash",
+      "KAS_BUILD_DIR": "${containerWorkspaceFolder}/build",
+      "DL_DIR": "${containerWorkspaceFolder}/cache/downloads",
+      "SSTATE_DIR": "${containerWorkspaceFolder}/cache/sstate"
+   },
+
+   "mounts": [
+      "type=bind,source=${localEnv:HOME}${localEnv:USERPROFILE},target=/home/hostuser,readonly",
+      "type=volume,source=${localWorkspaceFolderBasename}-build,target=${containerWorkspaceFolder}/build",
+      "type=volume,source=${localWorkspaceFolderBasename}-cache,target=${containerWorkspaceFolder}/cache",
+      "type=volume,source=${localWorkspaceFolderBasename}-sources,target=${containerWorkspaceFolder}/sources"
+   ],
+
+   "postCreateCommand": "sudo chown -R builder:builder build cache sources",
+   "postStartCommand": "bash ${containerWorkspaceFolder}/.devcontainer/setup-env.sh /home/hostuser",
+
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	// "features": {},
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+	// Configure tool-specific properties.
+	"customizations": {
+      "vscode": {
+         "extensions": [
+            "eamodio.gitlens",
+            "mads-hartmann.bash-ide-vscode",
+            "ms-vscode.cpptools",
+            "ms-python.python",
+            "ms-python.debugpy",
+            "twxs.cmake",
+            "yocto-project.yocto-bitbake",
+            "github.vscode-github-actions"
+         ],
+         "settings": {
+            "files.watcherExclude": {
+               "**/.git/objects/**": true,
+               "**/.git/subtree-cache/**": true,
+               "**/build/*/**": true,
+               "**/cache/*/**": true
+            },
+            "python.analysis.nodeExecutable": "/usr/bin/node",
+            "python.analysis.exclude": [
+               "**/build/*/**",
+               "**/cache/*/**"
+            ],
+            "bitbake.commandWrapper": "kas shell -k -c",
+            "bitbake.parseOnSave": false,
+            "bitbake.pathToBitbakeFolder": "${containerWorkspaceFolder}/sources/poky.git/bitbake",
+            "bitbake.pathToBuildFolder": "${containerWorkspaceFolder}/build",
+            "[markdown]": {
+               "files.trimTrailingWhitespace": false
+            }
+         }
+      }
+   },
+
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	"remoteUser": "builder"
+}

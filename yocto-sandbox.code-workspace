@@ -1,0 +1,35 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+   ],
+   "settings": {
+      "[python]": {
+         "diffEditor.ignoreTrimWhitespace": false,
+         "gitlens.codeLens.symbolScopes": [
+            "!Module"
+         ],
+         "editor.formatOnType": true,
+         "editor.wordBasedSuggestions": "off",
+         "files.trimTrailingWhitespace": false
+      },
+      "[shellscript]": {
+         "files.eol": "\n",
+         "files.trimTrailingWhitespace": false
+      },
+      "files.associations": {
+         "*.conf": "bitbake",
+         "*.inc": "bitbake"
+      },
+      "python.autoComplete.extraPaths": [
+         "/workspaces/yocto-sandbox/sources/poky.git/bitbake/lib",
+         "/workspaces/yocto-sandbox/sources/poky.git/meta/lib"
+      ],
+      "python.analysis.extraPaths": [
+         "/workspaces/yocto-sandbox/sources/poky.git/bitbake/lib",
+         "/workspaces/yocto-sandbox/sources/poky.git/meta/lib"
+      ],
+      "task.saveBeforeRun": "never"
+   }
+}
